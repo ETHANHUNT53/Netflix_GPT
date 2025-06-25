@@ -1,11 +1,17 @@
 import { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate';
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword , updateProfile } from "firebase/auth";
+import { auth } from '../utils/firebase';
+import { useDispatch } from 'react-redux';
+import { addUser, removeUser } from '../utils/userSlice';
+
 
 const Login = () => {
 
     const [isSignInForm , setIsSignInForm] = useState(true);
     const [errorMessage,setErrorMessage] = useState(null);
+    const dispatch = useDispatch();
     const email = useRef(null);
     const password = useRef(null);
     const name = useRef(null);
@@ -17,7 +23,53 @@ const Login = () => {
         //Validate the form data
         const message = checkValidData(email.current.value,password.current.value,!isSignInForm ? name.current.value : null)
         setErrorMessage(message);
-    }
+        // console.log(name.current.value)
+        if(message) return;
+
+        //Sign in sign up logic
+        if(!isSignInForm){
+            //Sign up logic
+            createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+            .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                // console.log(user);
+                updateProfile(user, {
+                    displayName: name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
+                    }).then(() => {
+                    // Profile updated!
+                        const {uid, email , displayName, photoURL} = auth.currentUser;
+                        dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}))
+                    // ...
+                    }).catch((error) => {
+                    // An error occurred
+                       setErrorMessage(error.message);
+                    });
+
+                
+                // ...
+             })
+            .catch((error) => {
+                 const errorCode = error.code;
+                 const errorMessage = error.message;
+                 setErrorMessage(errorCode+" - "+errorMessage)
+            // ..
+             });
+        }
+        else{
+                signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorCode+' - '+errorMessage);
+                });    //Sign in logic
+            }
+}
   return (
     <div>
         <div className='w-full absolute'>
