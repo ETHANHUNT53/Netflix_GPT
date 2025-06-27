@@ -5,11 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { FaCaretDown , FaCaretUp } from "react-icons/fa";
+import { toggleGptSearchView } from '../utils/gptSlice';
+import { LOGO, SUPPORTED_LANGUAGES, USER_ICON } from '../utils/constants';
+import { changeLanguage } from '../utils/configSlice';
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store)=>store.user)
   const dispatch = useDispatch();
+  const showGptSearch = useSelector(store=>store.gpt.showGptSearch);
   const [showVisible,setShowVisible] = useState(false);
   const handleSignOut = ()=>{
     signOut(auth).then(() => {
@@ -37,12 +41,27 @@ const Header = () => {
   const handleDropdown = ()=>{
     setShowVisible(!showVisible);
   }
+  const handleGptSearch = ()=>{
+    dispatch(toggleGptSearchView());
+  }
+
+  const handleLanguageChange = (e)=>{
+    // console.log(e.target.value)
+    dispatch(changeLanguage(e.target.value));
+  }
   return (
     <div className='absolute bg-gradient-to-b from-black w-full z-10 flex justify-between'>
-      <img src="https://help.nflxext.com/helpcenter/OneTrust/oneTrust_production/consent/87b6a5c0-0104-4e96-a291-092c11350111/01938dc4-59b3-7bbc-b635-c4131030e85f/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png" className='w-48 mt-4' alt="logo" />
+      <img src={LOGO} className='w-48 mt-4' alt="logo" />
 
       {user && <div className='flex p-2 mr-12 my-4'>
-        <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer h-10' src="https://occ-0-6502-3647.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABXYofKdCJceEP7pdxcEZ9wt80GsxEyXIbnG_QM8znksNz3JexvRbDLr0_AcNKr2SJtT-MLr1eCOA-e7xlDHsx4Jmmsi5HL8.png?r=1d4" alt="usericon" />
+        {
+          showGptSearch &&
+        <select className='p-2 bg-gray-900 m-2 text-white cursor-pointer' onChange={handleLanguageChange}>
+          {SUPPORTED_LANGUAGES.map(lang => <option className='cursor-pointer' key={ lang.identifier} value={lang.identifier}>{lang.name}</option>)}
+        </select>
+        }
+        <button onClick={handleGptSearch} className=' px-4  bg-purple-800 hover:bg-purple-700 text-white rounded-lg mx-4 py-0 mt-1'>{showGptSearch?"Homepage":"GPT Search"}</button>
+        <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer mt-2 h-10' src={USER_ICON} alt="usericon" />
           <div className='mr-8'>
             <button className='mt-4 ml-1 text-lg' onMouseOver={handleDropdown} >{!showVisible?<FaCaretDown className='text-white'/>:<FaCaretUp className='text-white'/>}</button>
             {

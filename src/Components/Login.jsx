@@ -5,6 +5,7 @@ import {  createUserWithEmailAndPassword, signInWithEmailAndPassword , updatePro
 import { auth } from '../utils/firebase';
 import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
+import { LOGIN_BACKGROUND } from '../utils/constants';
 
 
 const Login = () => {
@@ -72,10 +73,10 @@ const Login = () => {
 }
   return (
     <div>
-        <div className='w-full absolute'>
             <Header/>
-            <img className='w-full' src="https://assets.nflxext.com/ffe/siteui/vlv3/8200f588-2e93-4c95-8eab-ebba17821657/web/IN-en-20250616-TRIFECTA-perspective_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_large.jpg" alt="" />
-        </div>
+            <div className='w-full absolute'>
+                <img className='w-full' src={LOGIN_BACKGROUND} alt="login-background" />
+            </div>
         <form onSubmit={(e)=>e.preventDefault()} className='absolute w-3/12 bg-black my-36 mx-auto right-0 left-0 p-12 rounded-lg bg-opacity-80'>
             <h1 className='font-bold text-3xl text-white py-4 '>{isSignInForm?`Sign In` : `Sign Up`}</h1>
             {
