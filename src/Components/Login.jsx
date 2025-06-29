@@ -24,7 +24,6 @@ const Login = () => {
         //Validate the form data
         const message = checkValidData(email.current.value,password.current.value,!isSignInForm ? name.current.value : null)
         setErrorMessage(message);
-        // console.log(name.current.value)
         if(message) return;
 
         //Sign in sign up logic
@@ -34,7 +33,6 @@ const Login = () => {
             .then((userCredential) => {
                 // Signed up 
                 const user = userCredential.user;
-                // console.log(user);
                 updateProfile(user, {
                     displayName: name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
                     }).then(() => {
@@ -75,14 +73,14 @@ const Login = () => {
     <div>
             <Header/>
             <div className='w-full absolute'>
-                <img className='w-full' src={LOGIN_BACKGROUND} alt="login-background" />
+                <img className='w-full h-screen object-cover' src={LOGIN_BACKGROUND} alt="login-background" />
             </div>
-        <form onSubmit={(e)=>e.preventDefault()} className='absolute w-3/12 bg-black my-36 mx-auto right-0 left-0 p-12 rounded-lg bg-opacity-80'>
+        <form onSubmit={(e)=>e.preventDefault()} className='absolute  md:w-1/3 lg:w-1/4 w-11/12 bg-black my-28 sm:my-28 md:my-36 mx-auto  right-0 sm:p-8 md:p-12 left-0 p-6 rounded-lg bg-opacity-80 sm:w-4/5'>
             <h1 className='font-bold text-3xl text-white py-4 '>{isSignInForm?`Sign In` : `Sign Up`}</h1>
             {
                 !isSignInForm && <input type="text" ref={name} placeholder='Name' className='p-4 my-4 w-full rounded-lg bg-gray-800 text-white'/>
             }
-            <input type="text" ref={email} placeholder='Email Address' className='p-4 my-4 text-white w-full rounded-lg bg-gray-800'/>
+            <input type="text" ref={email} placeholder='Email Address' className='p-4 my-4 text-white w-full  rounded-lg bg-gray-800'/>
             <input type="password" ref={password} placeholder='Password' className='p-4 my-4 w-full rounded-lg text-white bg-gray-800'/>
             <p className='text-red-500 font-bold'>{errorMessage}</p>
             <button className='p-4 my-6 bg-red-700 hover:bg-red-800 w-full text-white rounded-lg' onClick={handleButtonClick}>{isSignInForm?`Sign In`:`Sign Up`}</button>

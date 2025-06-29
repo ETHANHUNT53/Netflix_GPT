@@ -46,23 +46,35 @@ const Header = () => {
   }
 
   const handleLanguageChange = (e)=>{
-    // console.log(e.target.value)
     dispatch(changeLanguage(e.target.value));
   }
   return (
-    <div className='absolute bg-gradient-to-b from-black w-full z-10 flex justify-between'>
-      <img src={LOGO} className='w-48 mt-4' alt="logo" />
+    <div className='absolute bg-gradient-to-b from-black w-full z-10 flex flex-col justify-between md:flex-row'>
+      <div className='flex'>
+        <img src={LOGO} className='w-48 mx-auto md:mx-0 mt-4' alt="logo" />
+        <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer mt-9 h-10 md:hidden ' src={USER_ICON} alt="usericon" />
+          <div className='mr-8 md:hidden mt-9'>
+            <button className='mt-4 ml-1 text-lg' onMouseOver={handleDropdown} >{!showVisible?<FaCaretDown className='text-white'/>:<FaCaretUp className='text-white'/>}</button>
+            {
+              showVisible && 
+              <div onMouseLeave={()=>setShowVisible(!showVisible)} className='w-28 rounder-lg h-16 mt-6 ml-[-70px] border-black border-2 absolute bg-black bg-opacity-50 flex justify-center rounded-xl'>
+                <button className='font-bold text-white hover:underline' onClick={handleSignOut}>Sign Out</button>
+              </div>
+            }
+            </div>
 
-      {user && <div className='flex p-2 mr-12 my-4'>
+      </div>
+
+      {user && <div className='flex p-2 md:ml-40 ml-16 md:mr-12 my-4'>
         {
           showGptSearch &&
-        <select className='p-2 bg-gray-900 m-2 text-white cursor-pointer' onChange={handleLanguageChange}>
+        <select className='md:p-2 bg-gray-900 md:m-2 text-white cursor-pointer p-3 mr-8' onChange={handleLanguageChange}>
           {SUPPORTED_LANGUAGES.map(lang => <option className='cursor-pointer' key={ lang.identifier} value={lang.identifier}>{lang.name}</option>)}
         </select>
         }
-        <button onClick={handleGptSearch} className=' px-4  bg-purple-800 hover:bg-purple-700 text-white rounded-lg mx-4 py-0 mt-1'>{showGptSearch?"Homepage":"GPT Search"}</button>
-        <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer mt-2 h-10' src={USER_ICON} alt="usericon" />
-          <div className='mr-8'>
+        <button onClick={handleGptSearch} className=' md:px-4 py-2 px-3 ml-12  bg-purple-800 hover:bg-purple-700 text-white rounded-lg md:mx-4  md:py-0 mt-1'>{showGptSearch?"Homepage":"GPT Search"}</button>
+        <img onMouseOver={handleDropdown}  className='md:w-10 cursor-pointer md:mt-2 md:h-10 md:inline-block hidden' src={USER_ICON} alt="usericon" />
+          <div className='md:mr-8 hidden md:inline-block'>
             <button className='mt-4 ml-1 text-lg' onMouseOver={handleDropdown} >{!showVisible?<FaCaretDown className='text-white'/>:<FaCaretUp className='text-white'/>}</button>
             {
               showVisible && 
