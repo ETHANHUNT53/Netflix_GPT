@@ -52,17 +52,20 @@ const Header = () => {
     <div className='absolute bg-gradient-to-b from-black w-full z-10 flex flex-col justify-between md:flex-row'>
       <div className='flex'>
         <img src={LOGO} className='w-48 mx-auto md:mx-0 mt-4' alt="logo" />
-        <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer mt-9 h-10 md:hidden ' src={USER_ICON} alt="usericon" />
-          <div className='mr-8 md:hidden mt-9'>
+        {user && <img onMouseOver={handleDropdown}  className='w-10 cursor-pointer mt-9 h-10 md:hidden ' src={USER_ICON} alt="usericon" />}
+        {
+          user &&
+         <div className='mr-8 md:hidden mt-9'>
             <button className='mt-4 ml-1 text-lg' onMouseOver={handleDropdown} >{!showVisible?<FaCaretDown className='text-white'/>:<FaCaretUp className='text-white'/>}</button>
-            {
-              showVisible && 
-              <div onMouseLeave={()=>setShowVisible(!showVisible)} className='w-28 rounder-lg h-16 mt-6 ml-[-70px] border-black border-2 absolute bg-black bg-opacity-50 flex justify-center rounded-xl'>
-                <button className='font-bold text-white hover:underline' onClick={handleSignOut}>Sign Out</button>
-              </div>
-            }
-            </div>
-
+               {
+                showVisible &&
+                  <div onMouseLeave={()=>setShowVisible(!showVisible)} className='w-28 rounder-lg h-16 mt-6 ml-[-70px] border-black border-2 absolute bg-black bg-opacity-50 flex justify-center rounded-xl'>
+                    <button className='font-bold text-white hover:underline' onClick={handleSignOut}>Sign Out</button>
+                  </div>
+              }
+            
+          </div>
+        }
       </div>
 
       {user && <div className='flex p-2 md:ml-40 ml-16 md:mr-12 my-4'>
