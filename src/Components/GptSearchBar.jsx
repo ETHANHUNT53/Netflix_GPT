@@ -37,7 +37,6 @@ const GptSearchBar = () => {
       const tmdbResults = await Promise.all(promiseArray);
 
       dispatch(addGptMovieResults({movieNames : gptMovies , movieResults: tmdbResults}));
-      console.log(tmdbResults);
   }
   return (
     <div className='md:pt-[10%] pt-[50%]  flex justify-center'>
