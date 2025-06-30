@@ -63,7 +63,6 @@ const Header = () => {
                     <button className='font-bold text-white hover:underline' onClick={handleSignOut}>Sign Out</button>
                   </div>
               }
-            
           </div>
         }
       </div>
